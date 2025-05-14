@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "S8O9k4sYuFPujmnDQSIaVlHuXGqWrC9CNU6ufhKSJxU=",
+  "Source": "InvoiceBilling",
+  "BasePath": "_content/InvoiceBilling",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

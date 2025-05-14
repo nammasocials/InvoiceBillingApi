@@ -1,0 +1,12 @@
+C:\Users\Anand\source\repos\Learning\InvoiceBilling\Applications\InvoiceBillingApi\UtilitiesLayer\bin\Debug\net8.0\UtilitiesLayer.deps.json
+C:\Users\Anand\source\repos\Learning\InvoiceBilling\Applications\InvoiceBillingApi\UtilitiesLayer\bin\Debug\net8.0\UtilitiesLayer.dll
+C:\Users\Anand\source\repos\Learning\InvoiceBilling\Applications\InvoiceBillingApi\UtilitiesLayer\bin\Debug\net8.0\UtilitiesLayer.pdb
+C:\Users\Anand\source\repos\Learning\InvoiceBilling\Applications\InvoiceBillingApi\UtilitiesLayer\obj\Debug\net8.0\UtilitiesLayer.csproj.AssemblyReference.cache
+C:\Users\Anand\source\repos\Learning\InvoiceBilling\Applications\InvoiceBillingApi\UtilitiesLayer\obj\Debug\net8.0\UtilitiesLayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Anand\source\repos\Learning\InvoiceBilling\Applications\InvoiceBillingApi\UtilitiesLayer\obj\Debug\net8.0\UtilitiesLayer.AssemblyInfoInputs.cache
+C:\Users\Anand\source\repos\Learning\InvoiceBilling\Applications\InvoiceBillingApi\UtilitiesLayer\obj\Debug\net8.0\UtilitiesLayer.AssemblyInfo.cs
+C:\Users\Anand\source\repos\Learning\InvoiceBilling\Applications\InvoiceBillingApi\UtilitiesLayer\obj\Debug\net8.0\UtilitiesLayer.csproj.CoreCompileInputs.cache
+C:\Users\Anand\source\repos\Learning\InvoiceBilling\Applications\InvoiceBillingApi\UtilitiesLayer\obj\Debug\net8.0\UtilitiesLayer.dll
+C:\Users\Anand\source\repos\Learning\InvoiceBilling\Applications\InvoiceBillingApi\UtilitiesLayer\obj\Debug\net8.0\refint\UtilitiesLayer.dll
+C:\Users\Anand\source\repos\Learning\InvoiceBilling\Applications\InvoiceBillingApi\UtilitiesLayer\obj\Debug\net8.0\UtilitiesLayer.pdb
+C:\Users\Anand\source\repos\Learning\InvoiceBilling\Applications\InvoiceBillingApi\UtilitiesLayer\obj\Debug\net8.0\ref\UtilitiesLayer.dll
