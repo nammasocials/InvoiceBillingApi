@@ -25,7 +25,7 @@ public partial class InvoiceBillingContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=.;Database=InvoiceBilling;User Id=InvoiceUser;Password=invoice123;TrustServerCertificate=True;Encrypt=True;");
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=InvoiceBilling;User Id=InvoiceUser;Password=invoice123;Encrypt=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -80,7 +80,7 @@ public partial class InvoiceBillingContext : DbContext
 
         modelBuilder.Entity<Invoice>(entity =>
         {
-            entity.HasKey(e => e.InvoiceId).HasName("PK__Invoice__D796AAB582C2C3F0");
+            entity.HasKey(e => e.InvoiceId).HasName("PK__Invoice__D796AAB5A2471B5C");
 
             entity.ToTable("Invoice");
 
@@ -91,12 +91,8 @@ public partial class InvoiceBillingContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("C_Time");
-            entity.Property(e => e.Ewaybill)
-                .HasMaxLength(100)
-                .IsUnicode(false);
-            entity.Property(e => e.InvoiceNo)
-                .HasMaxLength(10)
-                .IsUnicode(false);
+            entity.Property(e => e.Ewaybill).HasMaxLength(100);
+            entity.Property(e => e.InvoiceNo).HasMaxLength(10);
             entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
                 .HasColumnName("isActive");
@@ -105,15 +101,18 @@ public partial class InvoiceBillingContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("M_Time");
             entity.Property(e => e.TotalCost).HasColumnType("numeric(18, 0)");
+            entity.Property(e => e.VehicelNo)
+                .HasMaxLength(100)
+                .HasColumnName("vehicelNo");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Invoices)
                 .HasForeignKey(d => d.CustomerId)
-                .HasConstraintName("FK__Invoice__Custome__46E78A0C");
+                .HasConstraintName("FK__Invoice__Custome__7E37BEF6");
         });
 
         modelBuilder.Entity<InvoiceProduct>(entity =>
         {
-            entity.HasKey(e => e.InvoiceProdId).HasName("PK__InvoiceP__624ED00AE9B611A1");
+            entity.HasKey(e => e.InvoiceProdId).HasName("PK__InvoiceP__624ED00A27AD6354");
 
             entity.Property(e => e.CId)
                 .HasDefaultValue(0)
@@ -131,23 +130,23 @@ public partial class InvoiceBillingContext : DbContext
             entity.HasOne(d => d.Invoice).WithMany(p => p.InvoiceProducts)
                 .HasForeignKey(d => d.InvoiceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__InvoicePr__Invoi__4BAC3F29");
+                .HasConstraintName("FK__InvoicePr__Invoi__02FC7413");
 
             entity.HasOne(d => d.Product).WithMany(p => p.InvoiceProducts)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__InvoicePr__Produ__4CA06362");
+                .HasConstraintName("FK__InvoicePr__Produ__03F0984C");
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.ProductId).HasName("PK__Product__B40CC6CD2F5CA5E9");
+            entity.HasKey(e => e.ProductId).HasName("PK__Product__B40CC6CDD07A0043");
 
             entity.ToTable("Product");
 
-            entity.HasIndex(e => e.Hsncode, "UQ__Product__7DEC4BAFD33C43E9").IsUnique();
+            entity.HasIndex(e => e.Hsncode, "UQ__Product__7DEC4BAFE7104F64").IsUnique();
 
-            entity.HasIndex(e => e.ProductName, "UQ__Product__DD5A978A0221C812").IsUnique();
+            entity.HasIndex(e => e.ProductName, "UQ__Product__DD5A978A62487805").IsUnique();
 
             entity.Property(e => e.CId)
                 .HasDefaultValue(0)
@@ -158,8 +157,7 @@ public partial class InvoiceBillingContext : DbContext
                 .HasColumnName("C_Time");
             entity.Property(e => e.Cost).HasColumnType("numeric(18, 0)");
             entity.Property(e => e.Hsncode)
-                .HasMaxLength(1)
-                .IsUnicode(false)
+                .HasMaxLength(100)
                 .HasColumnName("HSNCode");
             entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
@@ -168,12 +166,8 @@ public partial class InvoiceBillingContext : DbContext
             entity.Property(e => e.MTime)
                 .HasColumnType("datetime")
                 .HasColumnName("M_Time");
-            entity.Property(e => e.ProductName)
-                .HasMaxLength(100)
-                .IsUnicode(false);
-            entity.Property(e => e.ProductNo)
-                .HasMaxLength(10)
-                .IsUnicode(false);
+            entity.Property(e => e.ProductName).HasMaxLength(100);
+            entity.Property(e => e.ProductNo).HasMaxLength(10);
             entity.Property(e => e.Quantity).HasDefaultValue(1);
         });
 

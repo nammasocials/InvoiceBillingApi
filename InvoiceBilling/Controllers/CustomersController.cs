@@ -10,9 +10,9 @@ namespace InvoiceBilling.Controllers
     public class CustomersController : Controller
     {
         private readonly ICustomerService iCustomerService;
-        public CustomersController(ICustomerService customerService)
+        public CustomersController(ICustomerService _customerService)
         {
-            iCustomerService = customerService;
+            iCustomerService = _customerService;
         }
         //////////// Get Http Calls //////////////////
         [HttpGet("fetchAllCustomers")]
@@ -22,13 +22,13 @@ namespace InvoiceBilling.Controllers
             return Ok(customers);
         }
         [HttpGet("fetchCustomerById/{customerId}")]
-        public async Task<IActionResult> GetCompanies(int customerId)
+        public async Task<IActionResult> fetchCustomerById(int customerId)
         {
             var customers = await iCustomerService.fetchCustomerById(customerId);
             return Ok(customers);
         }
         [HttpGet("fetchCustomerByNo/{customerNo}")]
-        public async Task<IActionResult> GetCompanies(string customerNo)
+        public async Task<IActionResult> fetchCustomerByNo(string customerNo)
         {
             var customers = await iCustomerService.fetchCustomerByNo(customerNo);
             return Ok(customers);

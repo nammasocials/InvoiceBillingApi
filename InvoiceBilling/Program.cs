@@ -28,6 +28,7 @@ builder.Services.AddDbContext<InvoiceBillingContext>(options =>
 
 
 builder.Services.AddTransient<ICustomerService, CustomerService>();
+builder.Services.AddTransient<IProductService, ProductService>();
 
 
 builder.Services.AddControllers();

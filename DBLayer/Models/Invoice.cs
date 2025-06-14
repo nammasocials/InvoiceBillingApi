@@ -13,6 +13,8 @@ public partial class Invoice
 
     public decimal TotalCost { get; set; }
 
+    public string? VehicelNo { get; set; }
+
     public byte[]? EwayImg { get; set; }
 
     public string? Ewaybill { get; set; }
