@@ -13,4 +13,10 @@ namespace DBLayer
         public Product product { get; set; }
         public IFormFile ImageFile { get; set; }  // For uploaded file
     }
+    public class InvoiceDto
+    {
+        public Invoice invoice { get; set; }
+        public List<InvoiceProduct> products { get; set; }
+        public IFormFile ImageFile { get; set; }  // For uploaded file
+    }
 }

@@ -13,6 +13,7 @@ namespace DBLayer.Repository.Interface
         public Task<List<Product>> fetchAllProducts();
         public Task<Product> fetchProductById(int productId);
         public Task<Product> fetchProductByNo(string productNo);
-        public Task<Product> AddOrEditProduct(Product product, byte[] image);  
+        public Task<Product> AddOrEditProduct(Product product, byte[] image);
+        public Task<bool> updateProductQuantity(int productId, int quantity);
     }
 }

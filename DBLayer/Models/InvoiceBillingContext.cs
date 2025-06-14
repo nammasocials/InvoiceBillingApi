@@ -80,7 +80,7 @@ public partial class InvoiceBillingContext : DbContext
 
         modelBuilder.Entity<Invoice>(entity =>
         {
-            entity.HasKey(e => e.InvoiceId).HasName("PK__Invoice__D796AAB5A2471B5C");
+            entity.HasKey(e => e.InvoiceId).HasName("PK__Invoice__D796AAB553E16F26");
 
             entity.ToTable("Invoice");
 
@@ -107,12 +107,12 @@ public partial class InvoiceBillingContext : DbContext
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Invoices)
                 .HasForeignKey(d => d.CustomerId)
-                .HasConstraintName("FK__Invoice__Custome__7E37BEF6");
+                .HasConstraintName("FK__Invoice__Custome__09A971A2");
         });
 
         modelBuilder.Entity<InvoiceProduct>(entity =>
         {
-            entity.HasKey(e => e.InvoiceProdId).HasName("PK__InvoiceP__624ED00A27AD6354");
+            entity.HasKey(e => e.InvoiceProdId).HasName("PK__InvoiceP__624ED00A38CA4C25");
 
             entity.Property(e => e.CId)
                 .HasDefaultValue(0)
@@ -126,16 +126,17 @@ public partial class InvoiceBillingContext : DbContext
             entity.Property(e => e.MTime)
                 .HasColumnType("datetime")
                 .HasColumnName("M_Time");
+            entity.Property(e => e.Quantity).HasDefaultValue(1);
 
             entity.HasOne(d => d.Invoice).WithMany(p => p.InvoiceProducts)
                 .HasForeignKey(d => d.InvoiceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__InvoicePr__Invoi__02FC7413");
+                .HasConstraintName("FK__InvoicePr__Invoi__0F624AF8");
 
             entity.HasOne(d => d.Product).WithMany(p => p.InvoiceProducts)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__InvoicePr__Produ__03F0984C");
+                .HasConstraintName("FK__InvoicePr__Produ__10566F31");
         });
 
         modelBuilder.Entity<Product>(entity =>

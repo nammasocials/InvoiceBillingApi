@@ -52,6 +52,7 @@ namespace DBLayer.Repository.Service
                 existingCustomer.PinCode = customer.PinCode;
                 existingCustomer.MId = 0;
                 existingCustomer.MTime = DateTime.Now;
+                _context.Customers.Update(existingCustomer);
                 await _context.SaveChangesAsync();
 
                 return existingCustomer;

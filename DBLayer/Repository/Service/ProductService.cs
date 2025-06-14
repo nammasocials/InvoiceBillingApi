@@ -46,10 +46,11 @@ namespace DBLayer.Repository.Service
                 existingProduct.Img = image;
                 existingProduct.Cost = product.Cost;
                 existingProduct.Quantity = product.Quantity;
-                existingProduct.IsActive = product.IsActive;
+                existingProduct.IsActive = true;
                 existingProduct.Hsncode = product.Hsncode;
                 existingProduct.MId = 0;
                 existingProduct.MTime = DateTime.Now;
+                _context.Products.Update(existingProduct);
                 await _context.SaveChangesAsync();
 
                 return existingProduct;
@@ -62,7 +63,7 @@ namespace DBLayer.Repository.Service
                     Img = image,
                     Cost = product.Cost,
                     Quantity = product.Quantity,
-                    IsActive = product.IsActive,
+                    IsActive = true,
                     Hsncode = product.Hsncode,
                     CId = 0,
                     CTime = DateTime.Now,
@@ -72,6 +73,21 @@ namespace DBLayer.Repository.Service
 
                 return newProduct;
             }
+        }
+        public async Task<bool> updateProductQuantity(int productId,int quantity)
+        {
+            var existingProduct = await _context.Products
+                     .FirstOrDefaultAsync(a => a.ProductId == productId);
+            if (existingProduct != null)
+            {
+                existingProduct.Quantity = existingProduct.Quantity - quantity;
+                existingProduct.MId = 0;
+                existingProduct.MTime = DateTime.Now;
+                _context.Products.Update(existingProduct);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }
