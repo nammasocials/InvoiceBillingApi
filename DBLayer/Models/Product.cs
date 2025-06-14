@@ -17,6 +17,8 @@ public partial class Product
 
     public bool IsActive { get; set; }
 
+    public int Quantity { get; set; }
+
     public string Hsncode { get; set; } = null!;
 
     public int? CId { get; set; }
