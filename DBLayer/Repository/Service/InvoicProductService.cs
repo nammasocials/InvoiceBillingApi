@@ -1,5 +1,7 @@
-﻿using DBLayer.Models;
+﻿using AutoMapper;
+using DBLayer.Models;
 using DBLayer.Repository.Interface;
+using DBLayer.VModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,57 +15,67 @@ namespace DBLayer.Repository.Service
     {
         private readonly InvoiceBillingContext _context;
         private readonly IProductService iProductService;
-        public InvoicProductService(InvoiceBillingContext context, IProductService _ProductService)
+        private readonly IMapper iMapper;
+        public InvoicProductService(InvoiceBillingContext context, IProductService _ProductService, IMapper _mapper)
         {
             _context = context;
             iProductService = _ProductService;
+            iMapper = _mapper;
         }
-        public async Task<List<InvoiceProduct>> fetchAllInvoiceProductsByInvoiceId(int invoiceId)
+        public async Task<List<VMInvoiceProduct>> fetchAllInvoiceProductsByInvoiceId(int invoiceId)
         {
-            return await _context.InvoiceProducts.Where(C => C.InvoiceId == invoiceId).ToListAsync();
+            var contextInvoiceProduct = await _context.InvoiceProducts.Where(C => C.InvoiceId == invoiceId).ToListAsync();
+            return iMapper.Map<List<VMInvoiceProduct>>(contextInvoiceProduct);
         }
-        public async Task<InvoiceProduct> fetchInvoiceProductsById(int invoiceProductId)
+        public async Task<VMInvoiceProduct> fetchInvoiceProductsById(int invoiceProductId)
         {
-            return await _context.InvoiceProducts.Where(C => C.InvoiceProdId == invoiceProductId).FirstOrDefaultAsync();
+            var contextInvoiceProduct = await _context.InvoiceProducts.Where(C => C.InvoiceProdId == invoiceProductId).FirstOrDefaultAsync();
+            return iMapper.Map<VMInvoiceProduct>(contextInvoiceProduct);
         }
         /// <summary>
         /// // Add Or Edit Services
         /// </summary>
         /// <returns></returns>
-        public async Task<InvoiceProduct> AddOrEditInvoiceProducts(InvoiceProduct product, int invoiceId)
+        public async Task<VMInvoiceProduct> AddOrEditInvoiceProducts(VMAddInvoiceProduct product, int invoiceId)
         {
-            var existingInvProd = await _context.InvoiceProducts
-                    .FirstOrDefaultAsync(a => a.InvoiceProdId == product.InvoiceProdId);
-            if (existingInvProd != null)
-            {
-                existingInvProd.InvoiceId = product.InvoiceId;
-                existingInvProd.ProductId = product.ProductId;
-                existingInvProd.Quantity = product.Quantity;
-                existingInvProd.Cost = product.Cost;
-                existingInvProd.MId = 0;
-                existingInvProd.MTime = DateTime.Now;
-                _context.InvoiceProducts.Update(existingInvProd);
-                await _context.SaveChangesAsync();
-                var res = await iProductService.updateProductQuantity(product.ProductId, product.Quantity);
-                return existingInvProd;
+            //var mappedInvoiceProduct = iMapper.Map<InvoiceProduct>(product);
+            //var existingInvProd = await _context.InvoiceProducts
+            //        .FirstOrDefaultAsync(a => a.InvoiceProdId == mappedInvoiceProduct.InvoiceProdId);
+            //if (existingInvProd != null)
+            //{
+            //    //existingInvProd.InvoiceId = mappedInvoiceProduct.InvoiceId;
+            //    existingInvProd.ProductId = mappedInvoiceProduct.ProductId;
+            //    existingInvProd.Quantity = mappedInvoiceProduct.Quantity;
+            //    existingInvProd.Cost = mappedInvoiceProduct.Cost;
+            //    existingInvProd.MId = 0;
+            //    existingInvProd.MTime = DateTime.Now;
+            //    _context.InvoiceProducts.Update(existingInvProd);
+            //    await _context.SaveChangesAsync();
+            //    var res = await iProductService.updateProductQuantity(mappedInvoiceProduct.ProductId, mappedInvoiceProduct.Quantity);
+            //    var updatedInvoiceProduct = iMapper.Map<VMInvoiceProduct>(mappedInvoiceProduct);
+            //    return updatedInvoiceProduct;
                 
-            }
-            else
-            {
+            //}
+            //else
+            //{
+                var contextProduct = await iProductService.fetchProductById(product.ProductId);
                 var newInvoiceProduct = new InvoiceProduct
                 {
-                    InvoiceId = product.InvoiceId,
+                    InvoiceId = invoiceId,
                     ProductId = product.ProductId,
-                    Cost = product.Cost,
+                    UnitCost = contextProduct.Cost,
+                    Cost = contextProduct.Cost * product.Quantity,
+                    //Cost = mappedInvoiceProduct.Cost,
                     Quantity = product.Quantity,
                     CId = 0,
                     CTime = DateTime.Now,
                 };
                 await _context.InvoiceProducts.AddAsync(newInvoiceProduct);
                 await _context.SaveChangesAsync();
-                var res = await iProductService.updateProductQuantity(product.ProductId, product.Quantity);
-                return newInvoiceProduct;
-            }
+                var res = await iProductService.updateProductQuantity(product.ProductId, product.Quantity, invoiceId);
+                var updatedInvoiceProduct = iMapper.Map<VMInvoiceProduct>(newInvoiceProduct);
+                return updatedInvoiceProduct;
+            //}
 
         }
     }

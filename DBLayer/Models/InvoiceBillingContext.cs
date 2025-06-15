@@ -112,7 +112,7 @@ public partial class InvoiceBillingContext : DbContext
 
         modelBuilder.Entity<InvoiceProduct>(entity =>
         {
-            entity.HasKey(e => e.InvoiceProdId).HasName("PK__InvoiceP__624ED00A38CA4C25");
+            entity.HasKey(e => e.InvoiceProdId).HasName("PK__InvoiceP__624ED00A9BFF22EC");
 
             entity.Property(e => e.CId)
                 .HasDefaultValue(0)
@@ -127,16 +127,17 @@ public partial class InvoiceBillingContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("M_Time");
             entity.Property(e => e.Quantity).HasDefaultValue(1);
+            entity.Property(e => e.UnitCost).HasColumnType("numeric(18, 0)");
 
             entity.HasOne(d => d.Invoice).WithMany(p => p.InvoiceProducts)
                 .HasForeignKey(d => d.InvoiceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__InvoicePr__Invoi__0F624AF8");
+                .HasConstraintName("FK__InvoicePr__Invoi__160F4887");
 
             entity.HasOne(d => d.Product).WithMany(p => p.InvoiceProducts)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__InvoicePr__Produ__10566F31");
+                .HasConstraintName("FK__InvoicePr__Produ__17036CC0");
         });
 
         modelBuilder.Entity<Product>(entity =>

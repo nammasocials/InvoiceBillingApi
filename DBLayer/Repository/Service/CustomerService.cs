@@ -1,5 +1,7 @@
-﻿using DBLayer.Models;
+﻿using AutoMapper;
+using DBLayer.Models;
 using DBLayer.Repository.Interface;
+using DBLayer.VModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,70 +14,76 @@ namespace DBLayer.Repository.Service
     public class CustomerService : ICustomerService
     {
         private readonly InvoiceBillingContext _context;
-        public CustomerService(InvoiceBillingContext context) 
+        private readonly IMapper iMapper;
+        public CustomerService(InvoiceBillingContext context, IMapper _mapper) 
         {
             _context = context;
+            iMapper = _mapper;
         }
         /// <summary>
         /// // Fetch Services
         /// </summary>
         /// <returns></returns>
-        public async Task<List<Customer>> fetchAllCustomers()
+        public async Task<List<VMCustomer>> fetchAllCustomers()
         {
-            return await _context.Customers.Where(C => C.IsActive == true).ToListAsync();
+            var contextCustomer = await _context.Customers.Where(C => C.IsActive == true).ToListAsync();
+            return iMapper.Map<List<VMCustomer>>(contextCustomer);
         }
-        public async Task<Customer> fetchCustomerById(int customerId)
+        public async Task<VMCustomer> fetchCustomerById(int customerId)
         {
-            return await _context.Customers.Where(C => C.IsActive == true && C.CustomerId == customerId).FirstOrDefaultAsync();
+            var contextCustomer = await _context.Customers.Where(C => C.IsActive == true && C.CustomerId == customerId).FirstOrDefaultAsync();
+            return iMapper.Map<VMCustomer>(contextCustomer);
         }
-        public async Task<Customer> fetchCustomerByNo(string customerNo)
+        public async Task<VMCustomer> fetchCustomerByNo(string customerNo)
         {
-            return await _context.Customers.Where(C => C.IsActive == true && C.CustomerNo == customerNo).FirstOrDefaultAsync();
+            var contextCustomer = await _context.Customers.Where(C => C.IsActive == true && C.CustomerNo == customerNo).FirstOrDefaultAsync();
+            return iMapper.Map<VMCustomer>(contextCustomer);
         }
         /// <summary>
         /// // Add Or Edit Services
         /// </summary>
         /// <returns></returns>
-        public async Task<Customer> AddOrEditCustomer(Customer customer)
+        public async Task<VMCustomer> AddOrEditCustomer(VMCustomer customer)
         {
+            var mappedCustomer = iMapper.Map<Customer>(customer);
             var existingCustomer = await _context.Customers
-                    .FirstOrDefaultAsync(a => a.CustomerId == customer.CustomerId);
+                    .FirstOrDefaultAsync(a => a.CustomerId == mappedCustomer.CustomerId);
             if (existingCustomer != null)
             {
-                existingCustomer.CustomerName = customer.CustomerName;
-                existingCustomer.ContactNo = customer.ContactNo;
-                existingCustomer.EmailId = customer.EmailId;
-                existingCustomer.Gstno = customer.Gstno;
-                existingCustomer.Address = customer.Address;
-                existingCustomer.City = customer.City;
-                existingCustomer.State = customer.State;
-                existingCustomer.PinCode = customer.PinCode;
+                existingCustomer.CustomerName = mappedCustomer.CustomerName;
+                existingCustomer.ContactNo = mappedCustomer.ContactNo;
+                existingCustomer.EmailId = mappedCustomer.EmailId;
+                existingCustomer.Gstno = mappedCustomer.Gstno;
+                existingCustomer.Address = mappedCustomer.Address;
+                existingCustomer.City = mappedCustomer.City;
+                existingCustomer.State = mappedCustomer.State;
+                existingCustomer.PinCode = mappedCustomer.PinCode;
                 existingCustomer.MId = 0;
                 existingCustomer.MTime = DateTime.Now;
                 _context.Customers.Update(existingCustomer);
                 await _context.SaveChangesAsync();
-
-                return existingCustomer;
+                var updatedCustomer = iMapper.Map<VMCustomer>(existingCustomer);
+                return updatedCustomer;
             }
             else
             {
                 var newCustomer = new Customer
                 {
-                    CustomerName = customer.CustomerName,
-                    ContactNo = customer.ContactNo,
-                    EmailId = customer.EmailId,
-                    Gstno = customer.Gstno,
-                    Address = customer.Address,
-                    City = customer.City,
-                    State = customer.State,
-                    PinCode = customer.PinCode,
+                    CustomerName = mappedCustomer.CustomerName,
+                    ContactNo = mappedCustomer.ContactNo,
+                    EmailId = mappedCustomer.EmailId,
+                    Gstno = mappedCustomer.Gstno,
+                    Address = mappedCustomer.Address,
+                    City = mappedCustomer.City,
+                    State = mappedCustomer.State,
+                    PinCode = mappedCustomer.PinCode,
                     CId = 0,
                     CTime = DateTime.Now,
                 };
                 await _context.Customers.AddAsync(newCustomer);
                 await _context.SaveChangesAsync();
-
-                return newCustomer;
+                var insertedCustomer = iMapper.Map<VMCustomer>(newCustomer);
+                return insertedCustomer;
             }
         }
     }

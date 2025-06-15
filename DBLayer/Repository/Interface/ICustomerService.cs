@@ -1,4 +1,5 @@
 ﻿using DBLayer.Models;
+using DBLayer.VModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace DBLayer.Repository.Interface
 {
     public interface ICustomerService
     {
-        public Task<List<Customer>> fetchAllCustomers();
-        public Task<Customer> fetchCustomerById(int customerId);
-        public Task<Customer> fetchCustomerByNo(string customerNo);
-        public Task<Customer> AddOrEditCustomer(Customer customer);
+        public Task<List<VMCustomer>> fetchAllCustomers();
+        public Task<VMCustomer> fetchCustomerById(int customerId);
+        public Task<VMCustomer> fetchCustomerByNo(string customerNo);
+        public Task<VMCustomer> AddOrEditCustomer(VMCustomer customer);
     }
 }

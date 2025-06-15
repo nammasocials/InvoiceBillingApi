@@ -26,7 +26,7 @@ builder.Services.AddDbContext<InvoiceBillingContext>(options =>
     options.UseSqlServer(AMSConnectionString));
 
 
-
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddTransient<ICustomerService, CustomerService>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IInvoicProductService, InvoicProductService>();

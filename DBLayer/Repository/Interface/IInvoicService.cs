@@ -1,5 +1,6 @@
 ﻿using DBLayer.Models;
 using DBLayer.Repository.Service;
+using DBLayer.VModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,8 @@ namespace DBLayer.Repository.Interface
 {
     public interface IInvoicService
     {
-        public Task<List<Invoice>> fetchAllInvoices();
-        public Task<Invoice> fetchInvoiceById(int invoiceId);
-        public Task<Invoice> AddOrEditInvoice(Invoice invoice, List<InvoiceProduct> products, byte[] ewayBillImg);
+        public Task<List<VMInvoice>> fetchAllInvoices();
+        public Task<VMInvoice> fetchInvoiceById(int invoiceId);
+        public Task<VMInvoice> AddOrEditInvoice(VMAddInvoice invoice, List<VMAddInvoiceProduct> products, byte[] ewayBillImg);
         }
 }

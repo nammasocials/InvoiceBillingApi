@@ -2,7 +2,9 @@
 using DBLayer.Models;
 using DBLayer.Repository.Interface;
 using DBLayer.Repository.Service;
+using DBLayer.VModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace InvoiceBilling.Controllers
 {
@@ -30,8 +32,14 @@ namespace InvoiceBilling.Controllers
         }
         //////////// Post Http Calls//////////////////
         [HttpPost("AddOrEditInvoice")]
-        public async Task<IActionResult> AddOrEditInvoice(InvoiceDto invoiceDto)
+        public async Task<IActionResult> AddOrEditInvoice([FromForm] InvoiceDto invoiceDto)
         {
+            var invoiceData = new VMAddInvoice();
+            invoiceData.CustomerId = invoiceDto.CustomerId;
+            invoiceData.VehicelNo = invoiceDto.VehicelNo;
+            invoiceData.Ewaybill = invoiceDto.Ewaybill;
+            var productsList = new List<VMAddInvoiceProduct>();
+            productsList = JsonSerializer.Deserialize<List<VMAddInvoiceProduct>>(invoiceDto.ProductsJson);
             byte[] fileData = null;
 
             if (invoiceDto.ImageFile != null && invoiceDto.ImageFile.Length > 0)
@@ -42,7 +50,7 @@ namespace InvoiceBilling.Controllers
                     fileData = memoryStream.ToArray();
                 }
             }
-            var savedInvoice = await iInvoicService.AddOrEditInvoice(invoiceDto.invoice, invoiceDto.products, fileData);
+            var savedInvoice = await iInvoicService.AddOrEditInvoice(invoiceData, productsList, fileData);
             return Ok(savedInvoice);
         }
     }

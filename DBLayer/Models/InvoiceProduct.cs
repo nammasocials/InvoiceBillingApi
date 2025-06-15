@@ -13,6 +13,8 @@ public partial class InvoiceProduct
 
     public int Quantity { get; set; }
 
+    public decimal UnitCost { get; set; }
+
     public decimal Cost { get; set; }
 
     public int? CId { get; set; }

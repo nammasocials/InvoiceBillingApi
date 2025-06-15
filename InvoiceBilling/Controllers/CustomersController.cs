@@ -1,5 +1,6 @@
 ﻿using DBLayer.Models;
 using DBLayer.Repository.Interface;
+using DBLayer.VModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Windows.Input;
 
@@ -37,7 +38,7 @@ namespace InvoiceBilling.Controllers
 
         //////////// Post Http Calls//////////////////
         [HttpPost("AddOrEditCustomer")]
-        public async Task<IActionResult> AddOrEditCustomer(Customer customer)
+        public async Task<IActionResult> AddOrEditCustomer(VMCustomer customer)
         {
             var savedCustomer = await iCustomerService.AddOrEditCustomer(customer);
             return Ok(savedCustomer);
